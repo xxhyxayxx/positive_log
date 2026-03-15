@@ -36,15 +36,20 @@ class TestDatabase(unittest.TestCase):
         conn.close()
 
     def test_insert_and_get_log(self):
-        db.init_db()
-        test_context = "I felt happy because I imagined a beautifuly scene in Scotland."
-        
         from db import save_log, get_all_logs
+        test_context = "I felt happy because I imagined a beautifuly scene in Scotland."
         save_log(test_context)
         
         logs = get_all_logs()
         self.assertEqual(len(logs), 1)
         self.assertEqual(logs[0]['context'], test_context)
+    
+    def test_save_log_ignores_empty_content(self):
+        from db import save_log, get_all_logs
+        
+        save_log("   ")
+        logs = get_all_logs()
+        self.assertEqual(len(logs), 0)
     
     def test_delete_log(self):
         from db import save_log, get_all_logs, delete_log

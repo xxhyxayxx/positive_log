@@ -19,9 +19,15 @@ def init_db():
         db.commit()
 
 def save_log(context):
+    clean_context = context.strip() if context else ""
+    
+    if not clean_context:
+        return False
+    
     with get_db() as db:
         db.execute('INSERT INTO logs (context) VALUES (?)', (context,))
         db.commit()
+    return True
 
 def get_all_logs():
     with get_db() as db:
