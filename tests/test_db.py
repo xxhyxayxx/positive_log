@@ -8,6 +8,7 @@ class TestDatabase(unittest.TestCase):
     def setUp(self):
         self.test_db = "test_temp.db"
         db.DATABASE = self.test_db
+        db.init_db()
         
     def tearDown(self):
         if os.path.exists("test_temp.db"):
@@ -34,6 +35,16 @@ class TestDatabase(unittest.TestCase):
         self.assertIsNotNone(table_exists, 'logsテーブルが作成されていません')
         conn.close()
 
+    def test_insert_and_get_log(self):
+        db.init_db()
+        test_context = "I felt happy because I imagined a beautifuly scene in Scotland."
+        
+        from db import save_log, get_all_logs
+        save_log(test_context)
+        
+        logs = get_all_logs()
+        self.assertEqual(len(logs), 1)
+        self.assertEqual(logs[0]['context'], test_context)
         
 
 if __name__ ==  '__main__':

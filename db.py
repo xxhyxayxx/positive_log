@@ -17,3 +17,13 @@ def init_db():
             )
         ''')
         db.commit()
+
+def save_log(context):
+    with get_db() as db:
+        db.execute('INSERT INTO logs (context) VALUES (?)', (context,))
+        db.commit()
+
+def get_all_logs():
+    with get_db() as db:
+        return db.execute('SELECT * FROM logs ORDER BY created_at DESC').fetchall()
+    
