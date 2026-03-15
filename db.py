@@ -13,7 +13,7 @@ def init_db():
             CREATE TABLE IF NOT EXISTS logs(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 context TEXT NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                created_at TIMESTAMP DEFAULT (datetime('now', '+9 hours'))
             )
         ''')
         db.commit()

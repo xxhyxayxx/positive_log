@@ -3,7 +3,7 @@ from db import init_db, get_all_logs, save_log, delete_log
 
 app = Flask(__name__)
 
-init_db
+init_db()
 
 @app.route('/')
 def index():
@@ -17,10 +17,10 @@ def add():
         save_log(context)
     return redirect(url_for('index'))
 
-if __name__ == '__main__':
-    app.run(debug=True)
-
 @app.route('/delete/<int:log_id>', methods=['POST'])
 def delete(log_id):
     delete_log(log_id)
     return redirect(url_for('index'))
+
+if __name__ == '__main__':
+    app.run(debug=True)
