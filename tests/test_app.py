@@ -47,5 +47,20 @@ class TestApp(unittest.TestCase):
         logs = get_all_logs()
         self.assertEqual(len(logs), 1)
         self.assertEqual(logs[0]['context'], test_context)
+    
+    def test_delete_log(self):
+        test_context = "Delete context"
+        save_log(test_context)
         
+        from db import get_all_logs
+        logs = get_all_logs()
+        log_id = logs[0]['id']
         
+        response = self.app.post(f'/delete/{log_id}', follow_redirects=True)
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn(test_context, response.data.decode('utf-8'))
+        remaining_logs = get_all_logs()
+        self.assertEqual(len(remaining_logs), 0)
+            
+

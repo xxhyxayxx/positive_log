@@ -16,3 +16,11 @@ def add():
     if context:
         save_log(context)
     return redirect(url_for('index'))
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+@app.route('/delete/<int:log_id>', methods=['POST'])
+def delete(log_id):
+    delete_log(log_id)
+    return redirect(url_for('index'))
