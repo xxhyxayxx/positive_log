@@ -45,6 +45,18 @@ class TestDatabase(unittest.TestCase):
         logs = get_all_logs()
         self.assertEqual(len(logs), 1)
         self.assertEqual(logs[0]['context'], test_context)
+    
+    def test_delete_log(self):
+        from db import save_log, get_all_logs, delete_log
+        
+        save_log("Delet data")
+        logs = get_all_logs()
+        log_id = logs[0]['id']
+        
+        delete_log(log_id)
+        
+        remaining_logs = get_all_logs()
+        self.assertEqual(len(remaining_logs), 0)
         
 
 if __name__ ==  '__main__':

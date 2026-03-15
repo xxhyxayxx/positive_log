@@ -27,3 +27,9 @@ def get_all_logs():
     with get_db() as db:
         return db.execute('SELECT * FROM logs ORDER BY created_at DESC').fetchall()
     
+
+def delete_log(log_id):
+    with get_db() as db:
+        db.execute('DELETE FROM logs WHERE id = ?', (log_id,))
+        db.commit()
+
