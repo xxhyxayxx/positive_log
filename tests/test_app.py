@@ -35,3 +35,17 @@ class TestApp(unittest.TestCase):
         response = self.app.get('/')
         
         self.assertIn(test_context, response.data.decode('utf-8'))
+    
+    def test_add_log(self):
+        test_context = "New Positive Thought"
+        response = self.app.post('/add', data={"context": test_context}, follow_redirects=True)
+    
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(test_context, response.data.decode('utf-8'))
+        
+        from db import get_all_logs
+        logs = get_all_logs()
+        self.assertEqual(len(logs), 1)
+        self.assertEqual(logs[0]['context'], test_context)
+        
+        

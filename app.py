@@ -9,3 +9,10 @@ init_db
 def index():
     logs = get_all_logs()
     return render_template('index.html', logs=logs)
+
+@app.route('/add', methods=['POST'])
+def add():
+    context = request.form.get('context')
+    if context:
+        save_log(context)
+    return redirect(url_for('index'))
