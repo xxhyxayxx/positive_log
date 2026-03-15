@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Positive Log</title>
+</head>
+<body>
+    <h1>Logs</h1>
+    <ul>
+        {% for log in logs %}
+            <li>{{ log.context }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,37 @@
+import unittest
+from app import app
+from db import init_db, save_log, DATABASE
+import os
+
+class TestApp(unittest.TestCase):
+    def setUp(self):
+        self.test_db = "test_app_temp.db"
+        import db
+        db.DATABASE = self.test_db
+        with db.get_db() as conn:
+            conn.execute('''
+                CREATE TABLE IF NOT EXISTS logs (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    context TEXT NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                ) 
+            ''')
+        
+        self.app = app.test_client()
+        self.app.testing = True
+        
+    def tearDown(self):
+        if os.path.exists("test_app_temp.db"):
+            os.remove("test_app_temp.db")
+            
+    def test_index_page_loads(self):
+        response = self.app.get('/')
+        self.assertEqual(response.status_code, 200)
+    
+    def test_index_display_logs(self):
+        test_context = "Test context"
+        save_log(test_context)
+        
+        response = self.app.get('/')
+        
+        self.assertIn(test_context, response.data.decode('utf-8'))
